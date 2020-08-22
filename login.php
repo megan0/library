@@ -12,30 +12,31 @@
 
       <?php 
         include 'header.php';
+        include 'db_conn.php';
       ?> 
       <br>
-    <div class="container text-center">
-        <div class="row">
-            <div class='col-md-12'>
-                <h2 class='h2'>Vendosni te dhenat per tu loguar:</h2>
+      <div class="d-flex align-items-center justify-content-center flex-grow-1" >
+          <div class="container text-center">
+            <div class="row">
+              <div class="col-sm-10 col-md-8 col-lg-6 mx-auto">
+                <div class="card card-signin my-5 login-card " style="height: 300px">
+                  <div class="card-body">
+                    <h2 class='card-title h2'>Vendosni te dhenat per te hyre:</h2>
+                  <div class='form-group' style="padding: 30px 0">
+                    <form action="login_veprime.php" method="post" enctype="multipart/form-data">
+                      <label class="control-label col-sm-3 ">Username:</label>
+                      <input type="text" name="username" required/><br/>
+                      <label class="control-label col-sm-3 ">Password:</label>
+                      <input type="password" name="pass" required/><br/><br/>
+                      <input type="submit" value="LogIn" class="btn btn-primary active " />
+                    </form>
+                  </div>
+                  </div>
+                </div>
+              </div>
             </div>
-        </div>
-        <br/>
-        <div class="row">
-          <div class='col-md-8'>
-            <div class='form-group'>
-                <form action="login_veprime.php" method="post" enctype="multipart/form-data">
-                    <label class="control-label col-sm-4 l">Username:</label>
-                    <input type="text" name="username" required/><br/>
-                    <label class="control-label col-sm-4 l">Password:</label>
-                    <input type="password" name="pass" required/><br/>
-                    <input type="submit" value="LogIn" class="btn btn-primary active "/>
-
-                </form>
-            </div>
-        </div>
-     </div>
-</div>
+          </div>
+      </div>
       <br><br><br>
 
     <?php

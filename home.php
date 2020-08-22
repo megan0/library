@@ -11,6 +11,8 @@
    <body>
       <?php 
       include 'header.php';
+      include 'db_conn.php';
+
       ?>
       
       <div class='container text-center'>
