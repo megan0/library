@@ -41,9 +41,9 @@
             
          <div class='row'>
             <div class='col-md-6'>
-               <h3 class='h3'>Ne Oferte</h3>
+               <h3 class='h3'>Sugjerime</h3>
             
-            <div class='row'>
+              <div class='row'>
                   <div class='col-md-5'>
                      <img src='foto/alkimisti.jpg'  width=200 height=200>
                   </div>
@@ -56,8 +56,8 @@
                   <div class='col-md-5'>
                      <img src='foto/komedia.jpg'  width=200 height=200>
                   </div>
+               </div>
             </div>
-         </div>
             
             <div class='col-md-6'>
                <h3 class='h3'>Me te pelqyerat</h3>
@@ -70,6 +70,7 @@
                   </div>
                </div>
             </div>
+         </div>
       </div>
 
       <br>
@@ -77,7 +78,7 @@
       <div class='container text-center'>
          <div class='row'>
             <div class='col-md-12'>
-               <h2 class='h2'>Sugjerime</h2>
+               <h2 class='h2'>Ne Oferte</h2>
             </div>
          </div>
          <div class='row'>
@@ -89,22 +90,21 @@
                </ul>
 
 
-            <div class="carousel-inner">
-               <div class="carousel-item active">
-                  <img src="foto/c1.jpg"   width="1100" height="500">
-               </div>
-               <div class="carousel-item">
-                  <img src="foto/c2.jpg"  width="1100" height="500">
-               </div>
-               <div class="carousel-item">
-                  <img src="foto/c3.jpg"  width="1100" height="500">
+               <div class="carousel-inner">
+                  <div class="carousel-item active">
+                     <img src="foto/c1.jpg"   width="1100" height="500">
+                  </div>
+                  <div class="carousel-item">
+                     <img src="foto/c2.jpg"  width="1100" height="500">
+                  </div>
+                  <div class="carousel-item">
+                     <img src="foto/c3.jpg"  width="1100" height="500">
+                  </div>
                </div>
             </div>
          </div>
-
-
       </div>
-
+   
 
       <br>
       <br>
