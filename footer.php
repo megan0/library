@@ -1,4 +1,4 @@
-<footer >
+<footer>
 <nav class="navbar navbar-expand-sm bg-light navbar-light">
    <div class="container text-center">
    <div class="row">
