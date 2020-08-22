@@ -25,7 +25,7 @@
             <h3 class='h3'>Kontakt</h3>
             <ul class="list-unstyled">
             <li><a>04 231 9002</a></li>
-            <li><p><b>Kujdesi ndaj klientit</b> <br> E Hënë - E Premte, ora 09.00 - 17.00 <br> E Shtunë, ora 09.00 - 13.00 <br></p></li>
+            <li><p><b>Kujdesi ndaj klientit</b> <br> E Hënë-E Premte,ora 09.00-17.00 <br>E Shtunë,ora 09.00-13.00<br></p></li>
             </ul>
          </div>
    </div>

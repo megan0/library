@@ -8,7 +8,7 @@
                 <a class="nav-link nav1" href="signup.php">SignUp</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link nav1" href="#">LogIn</a>
+                <a class="nav-link nav1" href="login.php">LogIn</a>
             </li>
         </ul>
    </nav>
