@@ -22,8 +22,8 @@ if(isset($_POST['regjistrohu'])){
 
     $p_hash=password_hash($password, PASSWORD_DEFAULT);
 
-    $sql= mysqli_prepare($conn,"INSERT INTO perdorues VALUES ('?','?','?','?');");
-    mysqli_stmt_bind_param($sql, "s", $username,$p_hash,$emri,$mbiemri);
+    $sql= mysqli_prepare($conn,"INSERT INTO perdorues (username,pass,emer,mbiemer) VALUES (?,?,?,?);");
+    mysqli_stmt_bind_param($sql, "ssss",$username,$p_hash,$emri,$mbiemri,);
     if(mysqli_stmt_execute($sql)){
         echo'sukses';
     }
@@ -34,6 +34,7 @@ if(isset($_POST['regjistrohu'])){
 
 
     mysqli_stmt_close($sql);
+    exit();
 }
 
 

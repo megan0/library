@@ -28,20 +28,20 @@
         <div class="row">
           <div class='col-md-8'>
             <div class='form-group'>
-                <form action="signup_veprime.php" method="post" enctype="multipart/form-data">
+                <form> <!--action="signup_veprime.php" method="post" enctype="multipart/form-data"-->
                     <label class="control-label col-sm-4 l">Emri:</label>
                     <input type="text" name="emri" id='emri' required/><br/>
                     <label class="control-label col-sm-4 l">Mbiemri</label>
                     <input type="text" name="mbiemri" id='mbiemri' required/><br/>
                     <label class="control-label col-sm-4 l">Username:</label>
-                    <input type="text" name="username" id='username' required/><p id='usrn'></p><br/>
+                    <input type="text" name="username" id='username' required/><span id='usrn'></span><br/>
                     <label class="control-label col-sm-4 l">Password:</label>
-                    <input type="password" name="pass" id='pass1' required/><br/>
+                    <input type="password" name="pass" id='pass1' required/><span id='p1'></span><br/>
                     <label class="control-label col-sm-4 l">Konfirmo passwordin:</label>
                     <input type="password" name="passkonf" id='pass2' required/><span id='pconf'></span><br/><br/>
-                    <input type="submit" id="butt" value="Regjistrohu" class="btn btn-primary active "/>
+                    <input type="button" id="butt" value="Regjistrohu" class="btn btn-primary active "/>
 
-                    <span id='response'></span>
+                    <span id='pergj'></span>
 
                     <div class="container signin">
                       <p>Already have an account? <a href="signin.php">Sign in</a>.</p>
@@ -76,7 +76,7 @@
       });
 
       $(document).ready(function(){
-        $("#username").keypress(function(){
+        $("#username").change(function(){
           username = $(this).val();
           if (username!=''){
             $.ajax({
@@ -102,6 +102,9 @@
       $(document).ready(function(){
         $("#pass1").change(function(){
           pas1 = $(this).val();
+          if(pas1.length<8){
+            $("#p1").text("Passwordi duhet te kete me shume karaktere.");
+          }
         });
       });
 
@@ -124,8 +127,9 @@
         $(document).ready(function(){
         $("#butt").click(function(){
           if(username_status==0 || password_status==0){
-            $("#response").text("Ju lutem vendosni te dhenat sic duhet.");
+            $("#pergj").text("Ju lutem vendosni te dhenat sic duhet.");
           }
+
           else{
             $.ajax({
               url: 'signup_veprime.php',
@@ -137,21 +141,24 @@
               'pass1': pas1},
               success: function(response){
                 if(response=='sukses'){
-                  $("#response").text("Ju u regjistruat.");
+                  $("#pergj").text("Ju u regjistruat.");
                   $("#emri").val("");
                   $("#mbiemri").val("");
                   $("#username").val("");
                   $("#pass1").val("");
                   $("#pass2").val("");
                 }
-               
+               else{
+                $("#pergj").text(response);
+
+               }
               }
             });
+
           }
+
         });
       });
-        console.log("abc",emri,mbiemri,username);
-
 
     </script>
 
