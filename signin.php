@@ -11,8 +11,14 @@
   <body>
 
       <?php 
+        session_start();
+
         include 'header.php';
-        include 'db_conn.php';
+
+        if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
+          header("location: home.php");
+          exit;
+      }
       ?> 
       <br>
       <div class="d-flex align-items-center justify-content-center flex-grow-1" >
@@ -23,7 +29,7 @@
                   <div class="card-body">
                     <h2 class='card-title h2'>Vendosni te dhenat per te hyre:</h2>
                   <div class='form-group' style="padding: 30px 0">
-                    <form action="login_veprime.php" method="post" enctype="multipart/form-data">
+                    <form action="kontrollo_signin.php" method="post" enctype="multipart/form-data">
                       <label class="control-label col-sm-3 ">Username:</label>
                       <input type="text" name="username" required/><br/>
                       <label class="control-label col-sm-3 ">Password:</label>

@@ -13,8 +13,13 @@
 
   <body>
       <?php 
+        session_start();
         include 'header.php';
-        require_once 'db_conn.php';
+
+        if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
+          header("location: home.php");
+          exit;
+      }
 
       ?> 
       <br/>
