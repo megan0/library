@@ -29,12 +29,30 @@
                   <div class="card-body">
                     <h2 class='card-title h2'>Vendosni te dhenat per te hyre:</h2>
                   <div class='form-group' style="padding: 30px 0">
-                    <form action="kontrollo_signin.php" method="post" enctype="multipart/form-data">
+                    <form action="kontrollo_signin.php" method="POST" >
                       <label class="control-label col-sm-3 ">Username:</label>
                       <input type="text" name="username" required/><br/>
                       <label class="control-label col-sm-3 ">Password:</label>
                       <input type="password" name="pass" required/><br/><br/>
-                      <input type="submit" value="LogIn" class="btn btn-primary active " />
+                      <input type="submit" name='signin' value="SigIn" class="btn btn-primary active " />
+
+
+                      <?php
+                                
+                                if(isset($_SESSION["password_err"])){
+                                    $msg =implode($_SESSION["password_err"]) ;
+                                    echo($msg);
+                                }
+                                    else if(isset($_SESSION["username_err"])){
+                                        $msg =implode($_SESSION["username_err"]);
+                                        echo($msg);
+                                    }else if(isset($_SESSION["sql_err"])){
+                                        $msg =implode($_SESSION["sql_err"]);
+                                        echo($msg);
+                                    }
+                                    session_unset();
+
+                            ?>
                     </form>
                   </div>
                   </div>
