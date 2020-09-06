@@ -36,7 +36,9 @@
       <div class="row">
         <div class='col-md-8'>
           <div class='form-group'>
-            <form>
+            <form >
+              <label class="control-label col-sm-4 l">Foto:</label>
+              <input type="file" name="foto" id="foto" required><br>
               <label class="control-label col-sm-4 l">Titull:</label>
               <input type='text' name='titull' id='titull' required/><br/>
               <label class="control-label col-sm-4 l">Zhanri:</label>
@@ -65,6 +67,14 @@
 
   <script>
     var titull,zhanri,autor,viti,sh_bot,cmim,pershkrim;
+    var fd = new FormData();                  
+    
+    $(document).ready(function(){
+        $("#foto").change(function(){
+          foto = $(this).prop('files')[0];
+          fd.append('foto',foto);
+        });
+      });
     $(document).ready(function(){
         $("#titull").change(function(){
           titull = $(this).val();
@@ -102,17 +112,21 @@
       });
       $(document).ready(function(){
         $("#regjistro").click(function(){
+          fd.append('regjisstro', 1);
+          fd.append('titull', titull);
+          fd.append('zhanri', zhanri);
+          fd.append('autor', autor);
+          fd.append('viti', viti);
+          fd.append('sh_bot',sh_bot);
+          fd.append('cmim', cmim);
+          fd.append('pershkrim', pershkrim);
+
           $.ajax({
               url: 'mliber_veprime.php',
               type: 'post',
-              data:{'regjisstro': 1,
-              'titull': titull,
-              'zhanri': zhanri,
-              'autor': autor,
-              'viti': viti,
-              'sh_bot':sh_bot,
-              'cmim': cmim,
-              'pershkrim': pershkrim},
+              data: fd,
+              processData: false,
+              contentType: false,
               success: function(response){
                 if(response=='sukses'){
                   $("#pergj").text("Ky botim u regjistrua. Shihni:").append("<a href='edit.php'>ketu</a>");
@@ -123,11 +137,11 @@
                   $("#sh_botuese").val("");
                   $("#cmim").val("");
                   $("#pershkrim").val("");
+                  $("#foto").val("");
                 }
                else{
                 $("#pergj").text(response);
-
-               }
+                }
               }
             });
 

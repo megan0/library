@@ -38,6 +38,8 @@
         <div class='col-md-8'>
           <div class='form-group'>
             <form>
+              <label class="control-label col-sm-4 l">Foto:</label>
+              <input type="file" name="foto" id="foto" required><br>
               <label class="control-label col-sm-4 l">Emri/Mbiemri(i plote):</label>
               <input type='text' name='emer_mb' id='emer_mb' required/><br/>
               <label class="control-label col-sm-4 l">Pershkrim:</label>
@@ -59,7 +61,15 @@
   ?>
 
   <script>
-    var emri,pershkrim,me_te_lex;
+    var emri,pershkrim,me_te_lex,foto,ok=1;
+       var fd = new FormData();                  
+    
+    $(document).ready(function(){
+        $("#foto").change(function(){
+          foto = $(this).prop('files')[0];
+          fd.append('foto',foto);
+        });
+      });
     $(document).ready(function(){
         $("#emer_mb").change(function(){
           emri = $(this).val();
@@ -75,23 +85,25 @@
           me_te_lex = $(this).val();
         });
       });
-console.log(emri);
       $(document).ready(function(){
         $("#regjistro").click(function(){
+          fd.append('regjisstro',ok);
+          fd.append('emer',emri);
+          fd.append('pershkrim',pershkrim);
+          fd.append('me_te_lex',me_te_lex);
           $.ajax({
               url: 'mautor_veprime.php',
               type: 'post',
-              data:{'regjisstro': 1,
-              'emer': emri,
-              'pershkrim': pershkrim,
-              'me_te_lex': me_te_lex
-              },
+              data: fd,
+              processData: false,
+              contentType: false,
               success: function(response){
                 if(response=='sukses'){
                   $("#pergj").text("Autori u regjistrua. Shihni:").append("<a href='edit.php'>ketu</a>");
                   $("#emer_mb").val("");
                   $("#me_te_lex").val("");
                   $("#pershkrim").val("");
+                  $("#foto").val("");
                 }
                else{
                 $("#pergj").text(response);
