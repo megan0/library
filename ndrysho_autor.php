@@ -1,85 +1,68 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <title>Autor</title>
+    <title>Ndrysho Autor</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="project.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="js\jquery-3.4.1.min.js"></script>
-
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   </head>
   <body>
-
   <?php
     session_start();
+    include 'db_conn.php';
 
     if((!isset($_SESSION["loggedin"])) || (!$_SESSION["loggedin"] === true) || ($_SESSION["roli"]!=0)){
       header("location: home.php");
       exit;
     }
-
+    if(!isset($_GET['ndrysho'])){
+      header("location: home.php");
+      exit;
+    }
+    $id_autor=$_GET['ndrysho'];
+    $sql="select * from autor where id=$id_autor";
+    $result = $conn->query($sql);
+    if($result->num_rows == 0){
+      header("location: home.php");
+      exit;
+    }
+    $row = $result->fetch_assoc();
     include 'header.php';
-    include 'db_conn.php';
-
-
   ?>
 
-
-<div class="container ">
+  <div class="container">
       <div class="row">
         <div class='col-md-12'>
-          <h2 class='h2'>Regjistro nje autor te ri per librarine:</h2>
+          <h2 class='h2'>Nryshoni te dhenat:</h2>
         </div>
       </div>
 
       <div class="row">
         <div class='col-md-6'>
           <div class='form-group'>
-            <form>
+          <form>
+              <input type='hidden' name='id' id='id' value='<?=$row["id"]?>'>
               <label class="control-label col-sm-4 l">Foto:</label>
-              <input type="file" name="foto" id="foto" required><br>
+              <input type="file" name="foto" id="foto" ><br>
               <label class="control-label col-sm-4 l">Emri/Mbiemri(i plote):</label>
-              <input type='text' name='emer_mb' id='emer_mb' required/><br/>
+              <input type='text' name='emer_mb' id='emer_mb' value='<?=$row["emer_mb"]?>' required/><br/>
               <label class="control-label col-sm-4 l">Pershkrim:</label>
-              <textarea name='pershkrim' id='pershkrim' cols='23' rows='3' required></textarea></br>
+              <textarea name='pershkrim' id='pershkrim' cols='23' rows='3' required><?=$row["pershkrim"]?></textarea></br>
               <label class="control-label col-sm-4 l">Librat me te lexuar (Ju lutem shkruani titujt e plote dhe ndajini ata me presje nga njeri-tjetri):</label>
-              <textarea name='me_te_lex' id='me_te_lex' cols='23' rows='3' required></textarea></br>
+              <textarea name='me_te_lex' id='me_te_lex' cols='23' rows='3' required><?=$row["librat_me_lex"]?></textarea></br>
               <input type='button' name='regjistro' value="Regjistro" id='regjistro' class="btn btn-primary active "/><br/>
               <span id='pergj'></span>
             </form>
-          </div>
+            </div>
         </div>
-        <div class='col-md-6'>
-            <h3 class='h3'>Autoret e regjistruar:</h3>
-            <table class='table '>
-                <thead class='thead-dark'>
-                  <tr>
-                    <th>Emer</th>
-                    <th>Pershkrim</th>
-                    <th>Foto</th>
-                    <th>Veprime</th>
-                  </tr>
-                </thead>
-
-                <?php
-                  $sql="SELECT id,emer_mb,pershkrim FROM autor";
-                  $result = $conn -> query($sql);
-                    while($row = $result->fetch_assoc()) {
-
-                      echo "<tr>";
-                      echo "<td>".$row['emer_mb']."</td><td>".$row['pershkrim']."</td><td align='center'> <img src='foto/autor/".$row["emer_mb"].".jpg'width=70 height=70 /></td>";
-                      echo "<td><a href='ndrysho_autor.php?ndrysho=".$row['id']."' class='btn btn-secondary link'>Ndrysho</a><a href='mautor_veprime.php?fshi=".$row['id']."'class='btn btn-secondary link'>Fshi</a><a href='autor.php?id=".$row['id']."'class='btn btn-secondary link'>Shih me shume</a>";
-                      echo "</tr>";
-                    
-                    }
-                ?>
-            
-            </table>
       </div>
-      </div>
-   </div>
+  </div>
+
+
+
 
 
 
@@ -87,7 +70,7 @@
     include 'footer.php';
   ?>
 
-  <script>
+<script>
     var emri,pershkrim,me_te_lex,foto,ok=1;
        var fd = new FormData();                  
     
@@ -114,7 +97,12 @@
       });
       $(document).ready(function(){
         $("#regjistro").click(function(){
-          fd.append('regjisstro',ok);
+          me_te_lex = $("#me_te_lex").val();
+          emri = $("#emer_mb").val();
+          pershkrim = $("#pershkrim").val();
+
+          fd.append('ndrysho',ok);
+          fd.append('id', id);
           fd.append('emer',emri);
           fd.append('pershkrim',pershkrim);
           fd.append('me_te_lex',me_te_lex);

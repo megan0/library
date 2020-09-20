@@ -83,7 +83,101 @@ session_start();
   
 
     }
+
+
+    if(isset($_POST['ndrysho'])){
+      $titull= $_POST['titull'];
+      $zhanri=$_POST['zhanri'];
+      $autor=$_POST['autor'];
+      $viti=$_POST['viti'];
+      $sh_bot=$_POST['sh_bot'];
+      $cmim=$_POST['cmim'];
+      $pershkrim=$_POST['pershkrim'];
+      $id=$_POST['id'];
+
+      if(empty($_FILES['foto']['tmp_name']) || (!is_uploaded_file($_FILES['foto']['tmp_name']))){
+          
+          $sql="UPDATE liber SET titull=?, zhanri=?, autor=?, viti=?, shtepi_botuese=?, cmim=?, pershkrim=? WHERE id=$id;";
+          if($stmt = $conn->prepare($sql)){
+            $stmt->bind_param("ssiisis",$titull,$zhanri,$autor,$viti,$sh_bot,$cmim,$pershkrim);
+            if($stmt->execute()){
+                echo "sukses";
+            }
+            else{
+                echo 'Gabim!';
+            }
+
+          }
+          else{
+            echo 'Gabimm!';
+        }
+
+
+      }
+      else{
+        $target_dir = 'foto/liber/';
+        $target_file = $target_dir.$titull.'.jpg';
+        $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+        $uploadOk = 1;
+        if (file_exists($target_file)) {
+            unlink($target_file);
+        }
+
+        $check = getimagesize($_FILES['foto']['tmp_name']);
+            if($check !== false) {
+                $uploadOk = 1;
+            } 
+            else {
+                $uploadOk = 0;
+            }
+
+            if($imageFileType !='jpg'){
+                $uploadOk = 0;
+            }
+
+
+            if ($uploadOk == 0) {
+                echo "Foto nuk mund te uplodohet.";
+            } 
+            else {
+            if (move_uploaded_file($_FILES["foto"]["tmp_name"], $target_file)) {
+                    $sql="update liber set titull=?,zhanri=?,autor=?,viti=?,shtepi_boutese=?,cmim=?,pershkrim=? where id=$id";
+                    if($stmt = $conn->prepare($sql)){
+                      $stmt->bind_param("sssisis",$titull,$zhanri,$autor,$viti,$sh_bot,$cmim,$pershkrim);
+                      if($stmt->execute()){
+                          echo "sukses";
+                      }
+                      else{
+                          echo "gabim";
+                      }
+          
+               }
+            }
+            }
+        }
       
+    }
+
+    if(isset($_GET['fshi'])){
+        $id=$_GET['fshi'];
+        $sql="DELETE FROM liber WHERE id= $id";
+        
+        $sql1="SELECT titull FROM liber WHERE id=$id;";
+        $result = $conn -> query($sql1);
+        $row = $result->fetch_assoc();
+        $titull=$row['titull'];
+        
+        $target_dir = 'foto/liber/';
+        $target_file = $target_dir.$titull.'.jpg';
+        if (file_exists($target_file)) {
+            unlink($target_file);
+        }
+        $conn -> query($sql);
+        header('location:menaxho_liber.php');
+
+    }
+
+
 
     
 

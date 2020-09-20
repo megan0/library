@@ -1,121 +1,90 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <title>Menaxho Liber</title>
+    <title>Ndrysho Liber</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="project.css">
-
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="js\jquery-3.4.1.min.js"></script>
-
-    <style>
-      .link{
-        margin:1px;
-      }
-    </style> 
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   </head>
   <body>
-
-
   <?php
     session_start();
+    include 'db_conn.php';
 
     if((!isset($_SESSION["loggedin"])) || (!$_SESSION["loggedin"] === true) || ($_SESSION["roli"]!=0)){
       header("location: home.php");
       exit;
     }
-
+    if(!isset($_GET['ndrysho'])){
+      header("location: home.php");
+      exit;
+    }
+    $id_liber=$_GET['ndrysho'];
+    $sql="select * from liber where id=$id_liber";
+    $result = $conn->query($sql);
+    if($result->num_rows == 0){
+      header("location: home.php");
+      exit;
+    }
+    $row = $result->fetch_assoc();
     include 'header.php';
-    include 'db_conn.php';
-
-
   ?>
-    <div class="container-fluid">
+
+<div class="container">
       <div class="row">
         <div class='col-md-12'>
-          <h2 class='h2'>Regjistroni nje botim te ri:</h2>
+          <h2 class='h2'>Nryshoni te dhenat:</h2>
         </div>
       </div>
 
       <div class="row">
         <div class='col-md-6'>
           <div class='form-group'>
+
             <form >
+              <input type='hidden' name='id' id='id' value='<?=$row["id"]?>'>
               <label class="control-label col-md-4 l">Foto:</label>
-              <input type="file" name="foto" id="foto"  required><br>
+              <input type="file" name="foto" id="foto" ><br>
               <label class="control-label col-sm-4 l">Titull:</label>
-              <input type='text' name='titull' id='titull' required/><br/>
+              <input type='text' name='titull' id='titull' value='<?=$row["titull"]?>' required/><br/>
               <label class="control-label col-sm-4 l">Zhanri:</label>
-              <input type='text' name='zhanri' id='zhanri'required/><br/>
+              <input type='text' name='zhanri' id='zhanri' value='<?=$row["zhanri"]?>'required/><br/>
               <label class="control-label col-sm-4 l">Autor:</label>
-              <input type='text' name='autor' id='autor'required/><br/>
+              <input type='text' name='autor' id='autor' value='<?=$row["autor"]?>' required/><br/>
               <label class="control-label col-sm-4 l">Viti:</label>
-              <input type='number' name='viti' id='viti'required/><br/>
+              <input type='number' name='viti' id='viti' value='<?=$row["viti"]?>' required/><br/>
               <label class="control-label col-sm-4 l">Shtepia Botuese:</label>
-              <input type='text' name='sh_botuese' id='sh_botuese' required/><br/>
+              <input type='text' name='sh_botuese' id='sh_botuese' value='<?=$row["shtepi_botuese"]?>' required/><br/>
               <label class="control-label col-sm-4 l">Cmim:</label>
-              <input type='number' name='cmim' id='cmim' required/><br/>
+              <input type='number' name='cmim' id='cmim' value='<?=$row["cmim"]?>' required/><br/>
               <label class="control-label col-sm-4 l">Pershkrim:</label>
-              <textarea name='pershkrim' id='pershkrim' cols='23' rows='3' required></textarea></br>
-              <input type='button' name='regjistro' value="Regjistro" id='regjistro' class="btn btn-primary active "/><br/>
+              <textarea name='pershkrim' id='pershkrim' cols='23' rows='3'  required><?=$row["pershkrim"]?></textarea></br>
+              <input type='button' name='ndrysho' id='ndrysho' value="Ndrysho" id='regjistro' class="btn btn-primary active "/><br/>
               <span id='pergj'></span>
             </form>
           </div>
         </div>
-        
-        
-
-
-        <div class='col-md-6'>
-            <h3 class='h3'>Librat ne gjendje:</h3>
-            <table class='table '>
-                <thead class='thead-dark'>
-                  <tr>
-                    <th>Titull</th>
-                    <th>Autor</th>
-                    <th>Foto</th>
-                    <th>Veprime</th>
-                  </tr>
-                </thead>
-
-                <?php
-                  $sql="SELECT id,titull,autor FROM liber";
-                  $result = $conn -> query($sql);
-                    while($row = $result->fetch_assoc()) {
-                      $a=$row['autor'];
-                      $sql1="SELECT emer_mb FROM autor WHERE id=$a";
-                      $result1 = $conn -> query($sql1);
-                      $row1 = $result1->fetch_assoc();
-
-                      echo "<tr>";
-                      echo "<td>".$row['titull']."</td><td>".$row1['emer_mb']."</td><td align='center'> <img src='foto/liber/".$row["titull"].".jpg'width=70 height=70 /></td>";
-                      echo "<td><a href='ndrysho_liber.php?ndrysho=".$row['id']."' class='btn btn-secondary link'>Ndrysho</a><a href='mliber_veprime.php?fshi=".$row['id']."'class='btn btn-secondary link'>Fshi</a><a href='liber.php?shih=".$row['id']."'class='btn btn-secondary link'>Shih me shume</a>";
-                      echo "</tr>";
-                    
-                    }
-                ?>
-            
-            </table>
       </div>
-   </div>
- </div>
+  </div>
 
-   
+
 
   <?php
     include 'footer.php';
   ?>
 
-  <script>
-    var titull,zhanri,autor,viti,sh_bot,cmim,pershkrim;
-    var fd = new FormData();                  
+
+<script>
+    var titull,zhanri,autor,viti,sh_bot,cmim,pershkrim,id,foto;
+    var fd = new FormData();  
+   
     
     $(document).ready(function(){
         $("#foto").change(function(){
           foto = $(this).prop('files')[0];
-          fd.append('foto',foto);
         });
       });
     $(document).ready(function(){
@@ -154,15 +123,27 @@
         });
       });
       $(document).ready(function(){
-        $("#regjistro").click(function(){
-          fd.append('regjisstro', 1);
+        $("#ndrysho").click(function(){
+          id = $('#id').val();
+          pershkrim = $('#pershkrim').val();
+          titull = $("#titull").val();
+          zhanri= $("#zhanri").val();
+          viti = $('#viti').val();
+          sh_bot = $("#sh_botuese").val();
+          cmim = $('#cmim').val();
+          pershkrim = $("#pershkrim").val();
+          autor = $("#autor").val();
+          
+          fd.append('ndrysho', 1);
           fd.append('titull', titull);
           fd.append('zhanri', zhanri);
           fd.append('autor', autor);
           fd.append('viti', viti);
           fd.append('sh_bot',sh_bot);
           fd.append('cmim', cmim);
+          fd.append('id', id);
           fd.append('pershkrim', pershkrim);
+          fd.append('foto',foto);
 
           $.ajax({
               url: 'mliber_veprime.php',
@@ -172,7 +153,7 @@
               contentType: false,
               success: function(response){
                 if(response=='sukses'){
-                  $("#pergj").text("Ky botim u regjistrua. Shihni:").append("<a href='edit.php'>ketu</a>");
+                  $("#pergj").text("Ky botim u ndryshua. Shihni:").append("<a href='edit.php'>ketu</a>");
                   $("#titull").val("");
                   $("#zhanri").val("");
                   $("#autor").val("");
