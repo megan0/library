@@ -67,12 +67,26 @@ session_start();
         $libra=$_POST['me_te_lex'];
         $id=$_POST['id'];
 
+        $sqlem="SELECT emer_mb FROM autor WHERE id=$id";
+        $resultem = $conn -> query($sqlem);
+        $row = $resultem->fetch_assoc();
+        $emri_vj=$row['emer_mb'];
+
+
+        $target_dir = 'foto/autor/';
+        $target_file = $target_dir.$emri_vj.'.jpg';
+        $target_file_new= $target_dir.$emer.'.jpg';
+        $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+
 
         if(empty($_FILES['foto']['tmp_name']) || (!is_uploaded_file($_FILES['foto']['tmp_name']))){
           
-            $sql="UPDATE autor SET emer=?, pershkrim=?, librat_me_lex=? WHERE id=$id;";
+            $sql="UPDATE autor SET emer_mb=?, pershkrim=?, librat_me_lex=? WHERE id=$id;";
             if($stmt = $conn->prepare($sql)){
               $stmt->bind_param("sss",$emer,$pershkrim,$libra);
+              if (file_exists($target_file)) {
+                rename($target_file, $target_file_new);
+            }
               if($stmt->execute()){
                   echo "sukses";
               }
@@ -82,7 +96,7 @@ session_start();
   
             }
             else{
-              echo 'Gabimm!';
+              echo 'Gabimm!'.$conn->error;
           }
   
   
@@ -90,9 +104,6 @@ session_start();
 
 
         else{
-            $target_dir = 'foto/autor/';
-            $target_file = $target_dir.$emer.'.jpg';
-            $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
             $uploadOk = 1;
             if (file_exists($target_file)) {
                 unlink($target_file);
@@ -116,8 +127,8 @@ session_start();
                 } 
                 else {
                     
-                if (move_uploaded_file($_FILES["foto"]["tmp_name"], $target_file)) {
-                        $sql="UPDATE autor SET emer=?, pershkrim=?, librat_me_lex=? WHERE id=$id;";
+                if (move_uploaded_file($_FILES["foto"]["tmp_name"], $target_file_new)) {
+                        $sql="UPDATE autor SET emer_mb=?, pershkrim=?, librat_me_lex=? WHERE id=$id;";
                         if($stmt = $conn->prepare($sql)){
                           $stmt->bind_param("sss",$emer,$pershkrim,$libra);
                           if($stmt->execute()){
@@ -126,9 +137,12 @@ session_start();
                           else{
                               echo "gabim";
                           }
-              
+
+                        
                    }
+                   echo "sukses";
                 }
+                else {echo "Gabim!";}
                 }
             }
 

@@ -53,7 +53,7 @@
               <textarea name='pershkrim' id='pershkrim' cols='23' rows='3' required><?=$row["pershkrim"]?></textarea></br>
               <label class="control-label col-sm-4 l">Librat me te lexuar (Ju lutem shkruani titujt e plote dhe ndajini ata me presje nga njeri-tjetri):</label>
               <textarea name='me_te_lex' id='me_te_lex' cols='23' rows='3' required><?=$row["librat_me_lex"]?></textarea></br>
-              <input type='button' name='regjistro' value="Regjistro" id='regjistro' class="btn btn-primary active "/><br/>
+              <input type='button' name='ndrysho' value="Ndrysho" id='ndrysho' class="btn btn-primary active "/><br/>
               <span id='pergj'></span>
             </form>
             </div>
@@ -71,7 +71,7 @@
   ?>
 
 <script>
-    var emri,pershkrim,me_te_lex,foto,ok=1;
+    var emri,pershkrim,me_te_lex,foto,ok=1,id;
        var fd = new FormData();                  
     
     $(document).ready(function(){
@@ -96,10 +96,11 @@
         });
       });
       $(document).ready(function(){
-        $("#regjistro").click(function(){
+        $("#ndrysho").click(function(){
           me_te_lex = $("#me_te_lex").val();
           emri = $("#emer_mb").val();
           pershkrim = $("#pershkrim").val();
+          id=$("#id").val();
 
           fd.append('ndrysho',ok);
           fd.append('id', id);
@@ -114,7 +115,7 @@
               contentType: false,
               success: function(response){
                 if(response=='sukses'){
-                  $("#pergj").text("Autori u regjistrua. Shihni:").append("<a href='edit.php'>ketu</a>");
+                  $("#pergj").text("Ndryshimi u krye. Shihni:").append("<a href='edit.php'>ketu</a>");
                   $("#emer_mb").val("");
                   $("#me_te_lex").val("");
                   $("#pershkrim").val("");

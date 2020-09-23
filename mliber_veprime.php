@@ -95,11 +95,26 @@ session_start();
       $pershkrim=$_POST['pershkrim'];
       $id=$_POST['id'];
 
+
+      $sqltit="SELECT titull FROM liber WHERE id=$id;";
+      $result = $conn -> query($sqltit);
+      $row = $result->fetch_assoc();
+      $titull_vj=$row['titull'];
+
+      $target_dir = 'foto/liber/';
+      $target_file_new = $target_dir.$titull.'.jpg';
+      $target_file = $target_dir.$titull_vj.'.jpg';
+      $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+      $uploadOk = 1;
+
       if(empty($_FILES['foto']['tmp_name']) || (!is_uploaded_file($_FILES['foto']['tmp_name']))){
           
           $sql="UPDATE liber SET titull=?, zhanri=?, autor=?, viti=?, shtepi_botuese=?, cmim=?, pershkrim=? WHERE id=$id;";
           if($stmt = $conn->prepare($sql)){
             $stmt->bind_param("ssiisis",$titull,$zhanri,$autor,$viti,$sh_bot,$cmim,$pershkrim);
+            if (file_exists($target_file)) {
+                rename($target_file, $target_file_new);
+            }
             if($stmt->execute()){
                 echo "sukses";
             }
@@ -115,10 +130,7 @@ session_start();
 
       }
       else{
-        $target_dir = 'foto/liber/';
-        $target_file = $target_dir.$titull.'.jpg';
-        $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
-        $uploadOk = 1;
+        
         if (file_exists($target_file)) {
             unlink($target_file);
         }
@@ -140,10 +152,10 @@ session_start();
                 echo "Foto nuk mund te uplodohet.";
             } 
             else {
-            if (move_uploaded_file($_FILES["foto"]["tmp_name"], $target_file)) {
-                    $sql="update liber set titull=?,zhanri=?,autor=?,viti=?,shtepi_boutese=?,cmim=?,pershkrim=? where id=$id";
+            if (move_uploaded_file($_FILES["foto"]["tmp_name"], $target_file_new)) {
+                    $sql="UPDATE liber set titull=?,zhanri=?,autor=?,viti=?,shtepi_botuese=?,cmim=?,pershkrim=? where id=$id";
                     if($stmt = $conn->prepare($sql)){
-                      $stmt->bind_param("sssisis",$titull,$zhanri,$autor,$viti,$sh_bot,$cmim,$pershkrim);
+                      $stmt->bind_param("ssiisis",$titull,$zhanri,$autor,$viti,$sh_bot,$cmim,$pershkrim);
                       if($stmt->execute()){
                           echo "sukses";
                       }
@@ -151,8 +163,13 @@ session_start();
                           echo "gabim";
                       }
           
-               }
+                    }
+                    else{ echo "Gabim!";}
+
+               echo "sukses";
+
             }
+            else {echo "Gabim!";}
             }
         }
       
