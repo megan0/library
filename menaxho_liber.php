@@ -91,7 +91,7 @@
 
                       echo "<tr>";
                       echo "<td>".$row['titull']."</td><td>".$row1['emer_mb']."</td><td align='center'> <img src='foto/liber/".$row["titull"].".jpg'width=70 height=70 /></td>";
-                      echo "<td><a href='ndrysho_liber.php?ndrysho=".$row['id']."' class='btn btn-secondary link'>Ndrysho</a><a href='mliber_veprime.php?fshi=".$row['id']."'class='btn btn-secondary link'>Fshi</a><a href='liber.php?shih=".$row['id']."'class='btn btn-secondary link'>Shih me shume</a>";
+                      echo "<td><a href='ndrysho_liber.php?ndrysho=".$row['id']."' class='btn btn-secondary link'>Ndrysho</a><a href='mliber_veprime.php?fshi=".$row['id']."'class='btn btn-secondary link'>Fshi</a><a href='liber.php?liber=".$row['id']."'class='btn btn-secondary link'>Shih me shume</a>";
                       echo "</tr>";
                     
                     }

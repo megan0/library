@@ -51,10 +51,49 @@
               <input type='number' id='perq' name='perq' required/><br>
               <label class="control-label col-sm-7 l">Cmimi i ulur:</label>
               <input type='number' id='cmimi' name='cmimi' required/><br></br>
-              <input type='button' id='apliko' value='Apliko Ulje' name='apliko' class="btn btn-primary active "/>
+              <input type='button' id='apliko' value='Apliko Ulje' name='apliko' class="btn btn-primary active "/><br>
+              <span id='pergj'></span></br>
             </form>
           </div>
         </div>
+
+
+        <div class='col-md-6'>
+            <h3 class='h3'>Librat ne ulje:</h3>
+            <table class='table '>
+                <thead class='thead-dark'>
+                  <tr>
+                    <th>Titull</th>
+                    <th>Autor</th>
+                    <th>Cmim</th>
+                    <th>Perqindja e ulur</th>
+                    <th>Veprime</th>
+                  </tr>
+                </thead>
+                <?php
+                  $sql="SELECT * FROM ulje";
+                  $result = $conn -> query($sql);
+                    while($row = $result->fetch_assoc()) {
+                      $id=$row['id'];
+                      $sql1="SELECT titull FROM liber WHERE id=$id";
+                      $result1 = $conn -> query($sql1);
+                      $row1 = $result1->fetch_assoc();
+
+                      $sql2="SELECT emer_mb FROM autor JOIN liber ON liber.id=$id AND liber.autor=autor.id ";
+                      $result2 = $conn -> query($sql2);
+                      $row2 = $result2->fetch_assoc();
+
+
+                      echo "<tr>";
+                      echo "<td>".$row1['titull']."</td><td>".$row2['emer_mb']."</td><td>".$row['cmim']."</td><td> ".$row["perqindje"]."</td>";
+                      echo "<td><a href='aulje_vep.php?fshi=".$row['id']."' class='btn btn-secondary link'>Fshi</a>";
+                      echo "</tr>";
+                    
+                    }
+                ?>
+            
+            </table>
+          </div>
       </div>
   </div>
 
@@ -68,6 +107,8 @@
 
   <script>
     var libri,perq,cmimi;
+    libri=$("#select").val();
+
     $(document).ready(function(){
         $("#select").change(function(){
           libri=$("#select").val();
@@ -85,10 +126,46 @@
               url: 'aulje_vep.php',
               type: 'post',
               data: {'llogarit':1,
+                      'id': libri,
+                     'perqindje':perq},
+              success: function(response){
+                $("#cmimi").val(response);
+              }
+            });
+        }
+      
+
+        });
+      });
+
+
+      $(document).ready(function(){
+        $("#cmimi").change(function(){
+        if(libri=='0'){
+          $("#l").text("Ju lutem zgjidhni nje liber!");
+        }
+        else{
+          cmimi=$("#cmimi").val();
+        }
+      });
+      });
+
+      $(document).ready(function(){
+        $("#apliko").click(function(){
+          cmimi=$("#cmimi").val();
+          $.ajax({
+              url: 'aulje_vep.php',
+              type: 'post',
+              data: {'ulje': 1,
+                     'id': libri,
+                     'cmimi':cmimi,
                      'perqindje':perq},
               success: function(response){
                 if(response=='sukses'){
-                  
+                  $("#pergj").text("Libri eshte tashme ne ulje!");
+                  $("#select").val("0");
+                  $("#perq").val("");
+                  $("#cmimi").val("");
                 }
                else{
                 $("#pergj").text(response);
@@ -96,9 +173,8 @@
                }
               }
             });
-        }
-      
 
+          
         });
       });
   </script>
