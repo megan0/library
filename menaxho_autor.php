@@ -70,7 +70,7 @@
 
                       echo "<tr>";
                       echo "<td>".$row['emer_mb']."</td><td>".$row['pershkrim']."</td><td align='center'> <img src='foto/autor/".$row["emer_mb"].".jpg'width=70 height=70 /></td>";
-                      echo "<td><a href='ndrysho_autor.php?ndrysho=".$row['id']."' class='btn btn-secondary link'>Ndrysho</a><a href='mautor_veprime.php?fshi=".$row['id']."'class='btn btn-secondary link'>Fshi</a><a href='autor.php?id=".$row['id']."'class='btn btn-secondary link'>Shih me shume</a>";
+                      echo "<td><a href='ndrysho_autor.php?ndrysho=".$row['id']."' class='btn btn-secondary link'>Ndrysho</a><a href='mautor_veprime.php?fshi=".$row['id']."'class='btn btn-secondary link'>Fshi</a><a href='autor.php?autor=".$row['id']."'class='btn btn-secondary link'>Shih me shume</a>";
                       echo "</tr>";
                     
                     }
@@ -126,7 +126,7 @@
               contentType: false,
               success: function(response){
                 if(response=='sukses'){
-                  $("#pergj").text("Autori u regjistrua. Shihni:").append("<a href='edit.php'>ketu</a>");
+                  $("#pergj").text("Autori u regjistrua. ");
                   $("#emer_mb").val("");
                   $("#me_te_lex").val("");
                   $("#pershkrim").val("");

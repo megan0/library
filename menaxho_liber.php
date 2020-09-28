@@ -172,7 +172,7 @@
               contentType: false,
               success: function(response){
                 if(response=='sukses'){
-                  $("#pergj").text("Ky botim u regjistrua. Shihni:").append("<a href='edit.php'>ketu</a>");
+                  $("#pergj").text("Ky botim u regjistrua.");
                   $("#titull").val("");
                   $("#zhanri").val("");
                   $("#autor").val("");
