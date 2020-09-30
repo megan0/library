@@ -43,10 +43,20 @@
           $sql1="SELECT * FROM autor WHERE id=$id_autor";
           $result1 = $conn->query($sql1);
           $row1 = $result1->fetch_assoc();
+          $sql_ulje="SELECT * FROM ulje WHERE id=$id";
+          $result_ulje = $conn->query($sql_ulje);
+          $row_ulje = $result_ulje->fetch_assoc();
 
         ?>
         <h4><?= $row1['emer_mb']?></h4>
-        <h6 class=''><?= $row['cmim']?>L</h6>
+        <?php
+          if($result_ulje->num_rows == 0){
+              echo "<h6 class=''>".$row['cmim']."L</h6>";
+          }
+          else{
+            echo "<h6 class=''>".$row_ulje['cmim']."L</h6>";
+          }
+        ?>
         <?php
           if((isset($_SESSION["loggedin"])) && ($_SESSION["loggedin"] === true) && ($_SESSION["roli"]===1)){
             $id_lexuesi=$_SESSION["id"];

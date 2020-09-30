@@ -27,8 +27,8 @@
               <div class="col-sm-10 col-md-8 col-lg-6 mx-auto">
                 <div class="card card-signin my-5 login-card " style="height: 300px">
                   <div class="card-body">
-                    <h2 class='card-title h2'>Vendosni te dhenat per te hyre:</h2>
-                  <div class='form-group' style="padding: 30px 0">
+                    <h2 class='card-title h2' style="padding:5px">Vendosni te dhenat per te hyre:</h2>
+                  <div class='form-group' >
                     <form action="kontrollo_signin.php" method="POST" >
                       <label class="control-label col-sm-3 ">Username:</label>
                       <input type="text" name="username" required/><br/>

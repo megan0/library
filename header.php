@@ -8,10 +8,10 @@
             <?php
                     if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
                         if($_SESSION["roli"] === 0){
-                            echo("<a class='nav-link' href='admin.php'>Profili Admin</a>");
+                            echo("<a class='nav-link nav1' href='admin.php'>Profili Admin</a>");
                         }
                         if($_SESSION["roli"] === 1){
-                            echo("<a class='nav-link' href='perdorues.php'>Profil</a>");
+                            echo("<a class='nav-link nav1' href='perdorues.php'>Profil</a>");
                         }
                     }
                     else{

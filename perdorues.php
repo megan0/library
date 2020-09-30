@@ -41,42 +41,21 @@
         </div>
       </div>
       <div class='row '>
-        <!-- <div class='col-md-6 '>
-           <?php
-            // $sql1="SELECT * FROM liber HAVING max(id)";
-            // $result1 = $conn->query($sql1);
-            // if ($result1->num_rows ==1){
-            //   $row1 = $result1->fetch_assoc();
-            // }
-          ?>
-          <img src='foto/liber/$row1["titull"].jpg' class=" img img-thumbnail pt-4 m-3" width=150 height=150 />
-          
-          <div class="col-4 pt-1 mt-4 text-center">
-            <a href="liber.php?liber=//$row1['id']?>"><p class='' >" //$row1['titull']?>"</p></a>
-            <?php
-              // $id_autor=$row1['autor'];
-              // $sql2="SELECT * FROM autor WHERE id=$id_autor";
-              // $result2 = $conn->query($sql2);
-              // $row2 = $result2->fetch_assoc();
-
-            ?>
-            <a href="autor.php?autor=//$row2['id']?>"><p class='' > //$row2['emer_mb']?></p></a> 
-          </div>
-        </div> -->
 
         <div class='col-md-6 text-center '>
             
            <?php
+           $librat_e_preferuar= array();
             $sql6="SELECT * FROM liber JOIN preferenca ON liber.id=preferenca.id_libri AND preferenca.id_lex=$id ";
             $result6 = $conn->query($sql6);
             if ($result6->num_rows <1){
               echo "<h6>Shtoni librat qe pelqeni ne listen e preferencave tuaja per sugjerime me te mira!</h6>";
             }
             else{
-              $i=0;
-              while(($row6 = $result6->fetch_assoc()) && $i<=4){
+              
+              while(($row6 = $result6->fetch_assoc())){
                 echo "<a href='liber.php?liber=".$row6['id']."'><img src='foto/liber/".$row6['titull'].".jpg' class=' img img-thumbnail pt-4 m-3' width=150 height=150></a>";
-                $i++;
+                array_push($librat_e_preferuar,$row6['id']);
               }
             }
            ?>
@@ -85,16 +64,17 @@
 
         <div class='col-md-6 text-center'>
           <?php
+            $autoret_e_preferuar=array();
             $sqla="SELECT * FROM autor JOIN apreferenca ON autor.id=apreferenca.id_autor AND apreferenca.id_lex=$id ";
             $resulta = $conn->query($sqla);
             if ($resulta->num_rows <1){
               echo "<h6>Shtoni autoret qe pelqeni ne listen e preferencave tuaja per sugjerime me te mira!</h6>";
             }
             else{
-              $j=0;
-              while(($rowa = $resulta->fetch_assoc()) && $j<=4){
+              
+              while(($rowa = $resulta->fetch_assoc()) ){
                 echo "<a href='autor.php?autor=".$rowa['id']."'><img src='foto/autor/".$rowa['emer_mb'].".jpg' class=' img img-thumbnail pt-4 m-3' width=150 height=150></a>";
-                $j++;
+                array_push($autoret_e_preferuar,$rowa['id']);
               }
             }
           ?>
@@ -109,15 +89,25 @@
       <div class='row'>
         <div class='col-md-12 '>
           <?php
-            $sql5="SELECT * FROM liber JOIN apreferenca JOIN autor ON apreferenca.id_lex=$id AND apreferenca.id_autori
-                          AND liber.autor=autor.id AND liber.id NOT IN (SELECT id_libri FROM preferenca WHERE id_lex=$id) ";
-            $result5 = $conn->query($sql5);
-            if ($result5->num_rows >=1){
-              $a=0;
-              while(($row5 = $result5->fetch_assoc()) && $a<=4){
-                echo "<a href='liber.php?liber=".$row5['id']."'><img src='foto/liber/".$row5['titull'].".jpg' class=' img img-thumbnail pt-4 m-3' width=150 height=150></a>";
-                $a++;
+            $sugjerime= array();
+            for($i=0;$i<sizeof($autoret_e_preferuar);$i++){
+              $am=$autoret_e_preferuar[$i];
+              $sql5="SELECT * FROM liber WHERE liber.autor=$am AND liber.id NOT IN (SELECT id_libri FROM preferenca WHERE id_lex=$id) ";
+
+              $result5 = $conn->query($sql5);
+              if ($result5->num_rows >=1){
+                while(($row5 = $result5->fetch_assoc())){
+                  array_push($sugjerime,$row5['id']);
+                }
               }
+            }
+
+            for($j=0;$j<sizeof($sugjerime);$j++){
+              $s=$sugjerime[$j];
+              $sql_titull="SELECT titull FROM liber WHERE id=$s";
+              $result_titull = $conn->query($sql_titull);
+              $row_t = $result_titull->fetch_assoc();
+              echo "<a href='liber.php?liber=".$s."'><img src='foto/liber/".$row_t['titull'].".jpg' class=' img img-thumbnail pt-4 m-3' width=150 height=150></a>";
             }
           ?>
         </div>

@@ -8,8 +8,8 @@ include 'db_conn.php';
 if(isset($_POST['username_check'])){
     $username = $_POST['username'];
   	$sql = "SELECT * FROM users WHERE username='$username'";
-  	$results = mysqli_query($conn, $sql);
-  	if (mysqli_num_rows($results) > 0) {
+  	$results = $conn->query($sql);
+  	if ($result->num_rows > 0) {
   	  echo "taken";	
   	}else{
   	  echo 'not_taken';
@@ -25,9 +25,10 @@ if(isset($_POST['regjistrohu'])){
 
     $p_hash=password_hash($password, PASSWORD_DEFAULT);
 
-    $sql= mysqli_prepare($conn,"INSERT INTO perdorues (username,pass,emer,mbiemer) VALUES (?,?,?,?);");
-    mysqli_stmt_bind_param($sql, "ssss",$username,$p_hash,$emri,$mbiemri);
-    if(mysqli_stmt_execute($sql)){
+    $sql= "INSERT INTO perdorues (username,pass,emer,mbiemer) VALUES (?,?,?,?);";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ssss",$username,$p_hash,$emri,$mbiemri);
+    if($stmt->execute()){
         echo'sukses';
     }
     else{
@@ -36,7 +37,7 @@ if(isset($_POST['regjistrohu'])){
 
 
 
-    mysqli_stmt_close($sql);
+    $stmt->close();
     exit();
 }
 

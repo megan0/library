@@ -66,12 +66,39 @@
             <div class='col-md-6'>
                <h3 class='h3'>Me te pelqyerat</h3>
                <div class='row'>
-                  <div class='col-md-6'>
-                     <img src='foto/krim.jpg'  width=200 height=300>
-                  </div>
-                  <div class='col-md-6'>
-                     <img src='foto/idjoti.jpg'  width=200 height=300>
-                  </div>
+               <?php
+                  $renditja= array();
+                  $sql_fav="SELECT id_libri,count(id_libri)as l FROM preferenca GROUP BY id_libri";
+                  $result = $conn -> query($sql_fav);
+                  while($row = $result->fetch_assoc()) {
+                     $renditja[$row['id_libri']]=$row['l'];
+
+                  }
+
+                  arsort($renditja);
+                  $librat=array_keys($renditja);
+                  if(sizeof($librat)>1){
+                     $l1=$librat[0];
+                     $l2=$librat[1];
+                     $sql_titull="SELECT titull FROM liber WHERE id=$l1 or id=$l2";
+                     $result_titull = $conn->query($sql_titull);
+                     while($row_t = $result_titull->fetch_assoc()){
+                        $t=$row_t['titull'];
+                        echo "<div class='col-md-6'>";
+                        echo"<img src='foto/liber/$t.jpg' class=' img img-thumbnail pt-4 m-3'  width=200 height=300>";
+                        echo "</div>";
+                     }
+                  }
+               else{
+                  echo "<div class='col-md-6'>
+                  <img src='foto/krim.jpg'  width=200 height=300>
+               </div>
+               <div class='col-md-6'>
+                  <img src='foto/idjoti.jpg'  width=200 height=300>
+               </div>";
+               }
+               ?>
+               
                </div>
             </div>
          </div>
